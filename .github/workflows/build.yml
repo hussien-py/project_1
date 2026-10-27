@@ -31,10 +31,11 @@ jobs:
 
       - name: Apply build pins
         run: |
+          sed -i -E '/^#? ?p4a\.source_dir *=/d' buildozer.spec
           sed -i -E '/^#? ?(p4a\.branch|android\.ndk|android\.api|android\.accept_sdk_license) *=/d' buildozer.spec
           sed -i -E 's/^requirements *=.*/requirements = python3,kivy==2.3.0/' buildozer.spec
           sed -i '/^\[app\]/a p4a.branch = v2024.01.21\nandroid.ndk = 25b\nandroid.api = 33\nandroid.accept_sdk_license = True' buildozer.spec
-          grep -nE "^(p4a\.branch|android\.ndk|android\.api|android\.accept_sdk_license|requirements)" buildozer.spec
+          grep -nE "^(p4a\.branch|p4a\.source_dir|android\.ndk|android\.api|android\.accept_sdk_license|requirements)" buildozer.spec
 
       - name: Build APK
         run: buildozer -v android debug
